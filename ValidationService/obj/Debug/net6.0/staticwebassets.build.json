@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "vzMt7Als1FyXkTXB5+dNhLsTcao7WT8yKOr/8Zn+XB8=",
+  "Source": "ValidationService",
+  "BasePath": "_content/ValidationService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
