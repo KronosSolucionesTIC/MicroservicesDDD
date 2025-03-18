@@ -1,7 +1,11 @@
 {
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  },
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/paymentservice/{everything}",
+      "UpstreamPathTemplate": "/api/authorization",
+      "DownstreamPathTemplate": "/authorization",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -9,11 +13,11 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/paymentservice/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/validationservice/{everything}",
+      "UpstreamPathTemplate": "/api/payment",
+      "DownstreamPathTemplate": "/payment",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -21,11 +25,11 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/validationservice/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/authorizationservice/{everything}",
+      "UpstreamPathTemplate": "/api/validation",
+      "DownstreamPathTemplate": "/validation",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -33,11 +37,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/authorizationservice/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     }
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:6000"
-  }
+  ]
 }
