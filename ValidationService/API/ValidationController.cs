@@ -1,27 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace PaymentService.Controllers
+namespace ValidationService.API
 {
     [ApiController]
     [Route("[controller]")]
-    public class PaymentController : ControllerBase
+    public class ValidationController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<PaymentController> _logger;
+        private readonly ILogger<ValidationController> _logger;
 
-        public PaymentController(ILogger<PaymentController> logger)
+        public ValidationController(ILogger<ValidationController> logger)
         {
             _logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<Payment> Get()
+        public IEnumerable<Validation> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new Payment
+            return Enumerable.Range(1, 5).Select(index => new Validation
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),

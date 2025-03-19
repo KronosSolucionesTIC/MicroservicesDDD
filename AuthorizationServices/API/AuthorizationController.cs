@@ -1,27 +1,28 @@
+using AuthorizationServices;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ValidationService.Controllers
+namespace AuthorizationService.API
 {
     [ApiController]
     [Route("[controller]")]
-    public class ValidationController : ControllerBase
+    public class AuthorizationController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<ValidationController> _logger;
+        private readonly ILogger<AuthorizationController> _logger;
 
-        public ValidationController(ILogger<ValidationController> logger)
+        public AuthorizationController(ILogger<AuthorizationController> logger)
         {
             _logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<Validation> Get()
+        public IEnumerable<Authorization> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new Validation
+            return Enumerable.Range(1, 5).Select(index => new Authorization
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),

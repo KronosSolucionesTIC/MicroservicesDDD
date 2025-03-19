@@ -1,3 +1,11 @@
+using ValidationService.Infrastructure.Messaging;
+
+var consumer = new RabbitMqConsumer();
+consumer.StartListening();
+
+Console.WriteLine("Presiona cualquier tecla para salir...");
+Console.ReadLine();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
