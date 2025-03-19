@@ -16,8 +16,8 @@
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
-      "UpstreamPathTemplate": "/api/payment",
-      "DownstreamPathTemplate": "/payment",
+      "UpstreamPathTemplate": "/api/payment/start",
+      "DownstreamPathTemplate": "/payment/start",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
