@@ -1,4 +1,7 @@
+using Domain.Repositories;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using PaymentService.Application.Services;
 using PaymentService.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IPaymentService, PaymentServiceImpl>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 var app = builder.Build();
 

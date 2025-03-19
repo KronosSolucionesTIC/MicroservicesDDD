@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PaymentService.Application.Events;
+using PaymentService.Application.Services;
 using PaymentService.Infrastructure.Messaging;
 
 namespace PaymentService.API.Controllers
@@ -8,27 +9,22 @@ namespace PaymentService.API.Controllers
     [Route("[controller]")]
     public class PaymentController : ControllerBase
     {
+        private readonly IPaymentService _paymentService;
+
         private readonly RabbitMqPublisher _publisher;
 
-        public PaymentController()
+        public PaymentController(IPaymentService paymentService)
         {
+            _paymentService = paymentService;
             _publisher = new RabbitMqPublisher();
         }
 
-        [HttpPost("cancel")]
-        public IActionResult CancelPayment()
-        {
-            var paymentEvent = new PaymentCanceledEvent(Guid.NewGuid());
-            _publisher.Publish(paymentEvent);
-            Console.WriteLine("Evento enviado a RabbitMQ desde el POST");
-
-            return Ok(new { message = "Evento enviado a RabbitMQ", eventId = paymentEvent.PaymentId });
-        }
-
         [HttpPost("start")]
-        public IActionResult GetPayment()
+        public async Task<IActionResult> GetPaymentAsync()
         {
-            var paymentEvent = new PaymentStartedEvent(Guid.NewGuid(), Guid.NewGuid().ToString());
+            var userId = Guid.NewGuid();
+            var paymentId = await _paymentService.StartPaymentAsync(10000, userId);
+            var paymentEvent = new PaymentStartedEvent(paymentId, userId.ToString());
             _publisher.Publish(paymentEvent);
             Console.WriteLine("Evento enviado a RabbitMQ desde el GET");
 
