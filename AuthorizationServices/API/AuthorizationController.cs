@@ -20,15 +20,32 @@ namespace AuthorizationService.API
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<Authorization> Get()
+        public IActionResult Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new Authorization
+            _logger.LogInformation("Esto es un log de prueba desde la aplicación.");
+
+            try
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                var rng = new Random();
+
+                if (rng.Next(0, 5) < 2)
+                {
+                    throw new Exception("Opps");
+                }
+
+                return Ok(Enumerable.Range(1, 5).Select(index => new Authorization
+                {
+                    Date = DateTime.Now.AddDays(index),
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                })
+                .ToArray());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new StatusCodeResult(500);
+            }
         }
     }
 }
