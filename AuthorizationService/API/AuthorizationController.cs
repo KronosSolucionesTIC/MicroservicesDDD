@@ -1,4 +1,3 @@
-using AuthorizationService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorizationService.API
