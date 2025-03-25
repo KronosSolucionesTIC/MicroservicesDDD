@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  authorization-service:
+    image: alejandro/authorization-service:latest
+    networks:
+      - psenetwork
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+networks:
+  psenetwork:
+    driver: overlay
