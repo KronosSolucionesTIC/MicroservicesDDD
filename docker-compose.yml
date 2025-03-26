@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    networks:
+      - pse_network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
+
+  payment_service:
+    image: paymentservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - pse_network
+    depends_on:
+      - rabbitmq
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  validation_service:
+    image: validationservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - pse_network
+    depends_on:
+      - rabbitmq
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  pse_network:
+    driver: overlay

@@ -17,8 +17,8 @@ namespace PaymentService.Infrastructure.Messaging
             {
                 HostName = "localhost",  // Cambia si usas Docker en otra IP
                 Port = 5672,             // Puerto de RabbitMQ
-                UserName = "guest",      // Usuario por defecto
-                Password = "guest"       // Contraseña por defecto
+                UserName = "admin",      // Usuario por defecto
+                Password = "admin"       // Contraseña por defecto
             };
             try
             {

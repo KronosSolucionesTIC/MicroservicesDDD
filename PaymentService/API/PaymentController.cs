@@ -23,8 +23,9 @@ namespace PaymentService.API.Controllers
         public async Task<IActionResult> GetPaymentAsync()
         {
             var userId = Guid.NewGuid();
-            var paymentId = await _paymentService.StartPaymentAsync(10000, userId);
-            var paymentEvent = new PaymentStartedEvent(paymentId, userId.ToString());
+            var amount = 10000;
+            var paymentId = await _paymentService.StartPaymentAsync(amount, userId);
+            var paymentEvent = new PaymentStartedEvent(paymentId, amount, userId.ToString());
             _publisher.Publish(paymentEvent);
             Console.WriteLine("Evento enviado a RabbitMQ desde el GET");
 

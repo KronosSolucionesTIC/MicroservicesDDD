@@ -1,33 +1,31 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PaymentService.Infrastructure.Persistence;
 using ValidationService.Infrastructure.Messaging;
-
-var consumer = new RabbitMqConsumer();
-consumer.StartListening();
-
-Console.WriteLine("Presiona cualquier tecla para salir...");
-Console.ReadLine();
+using ValidationService.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Agregar servicios al contenedor de dependencias
+builder.Services.AddSingleton<ValidationServiceImpl>();  // Corregido
+builder.Services.AddSingleton<RabbitMQConsumer>();  // Corregido
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Configuración de Entity Framework Core con SQL Server
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Consumidor de RabbitMQ al iniciar la aplicación
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var consumer = scope.ServiceProvider.GetRequiredService<RabbitMQConsumer>();
+
+    // Iniciar consumo de mensajes en RabbitMQ cuando la aplicación arranque
+    app.Lifetime.ApplicationStarted.Register(() =>
+    {
+        Console.WriteLine("Starting RabbitMQ Consumer...");
+        consumer.StartConsuming();
+    });
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();
